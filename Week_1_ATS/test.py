@@ -12,10 +12,4 @@ def print_list(some_list):
             
 print(print_list([1, '2', 3, '4', 5, '6']))
 
-<<<<<<< HEAD
 # print(6 % 3)
-=======
-
-
-# print(6 % 3)
->>>>>>> 8e3606790a69f5003dcc4a9e3e745ebaf0868c56
