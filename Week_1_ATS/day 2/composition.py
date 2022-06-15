@@ -1,0 +1,13 @@
+first_name = input("Enter your first name: ")
+surname = input("Enter your last name: ")
+age = input("Enter your age: ")
+prog_exp = input ("How many years of programming experience do you have: ")
+school = input("Which university did you attend: ")
+best_friend = input("What is the name of your best friend: ")
+prospects = input("Where do you see yourself in 5 years time? ")
+
+print()
+print(f"Dear {first_name} {surname}")
+print(f"It's nice to know that you're {age} years of age and you graduated from {school}.")
+print(f"Also, you having {prog_exp} years of programming experience is a really great one.")
+print(f"We're also glad to know that {best_friend} is your best friend and we'd like to see you grow and become a {prospects} in 5 years time.")
