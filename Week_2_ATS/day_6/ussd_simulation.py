@@ -14,20 +14,24 @@ phone_numbers = {"09034": [200, 12], "08123": [50, 10], "09155": [100, 15]}
 # set PIN
 def set_pin():
     pin = input("Set your 4-digit Pin: ")
-    if len(pin) < 4 or len(pin) > 4:
+    if len(pin) != 4:
         print(f"ERROR: Pin must be 4-digits")
         return set_pin()
-    print("Your Pin has been successfully set")
+    if not pin.isdecimal():
+        print("PIN can be only be numbers")
+        return set_pin()
+    print("Your PIN has been successfully set")
     return pin
 
 PIN = set_pin()
+
 # 1) check balance
 def check_bal():
     return f"Your account balance is: #{account_bal}"
     
 # 2) transfer cash
 def transfer_cash():
-    global account_bal, PIN
+    global account_bal
     transfer_amount = int(input("Enter the amount you want to transfer: "))
     pin = input("Enter your Pin: ")
     if pin == PIN:
@@ -37,6 +41,7 @@ def transfer_cash():
         receiver_acct = input("Enter the receiver's account number: ")
         if acct_details.get(receiver_acct) != None: 
             acct_details[receiver_acct] += transfer_amount
+            print(acct_details[receiver_acct])
             return f"""#{transfer_amount} has been transferred to {receiver_acct}
                     Your remaining balance is #{account_bal}"""
         return "Account Number not found"
