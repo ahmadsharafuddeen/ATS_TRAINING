@@ -7,7 +7,15 @@ def count_down(n):
         n = count_down(n - 1)
 # count_down(89)
 
-def fib(n):
-    return 1 if n == 0 else n * fib(n - 1)
+def factorial(n):
+    return 1 if n == 0 else n * factorial(n - 1)
 
-print(fib(5))
+print(factorial(5))
+
+def fibonnaci(n):
+    if n == 0 or n == 1:
+        return 1
+    return fibonnaci(n - 2) + fibonnaci(n - 1)
+
+print(fibonnaci(10))
+    

@@ -38,7 +38,7 @@ for num in number:
             changing -= 1
             continue
         if int(num) == 1:
-            if last_digit in exceptions.keys():
+            if last_digit in exceptions:
                 if result != '':
                     result += f" and {exceptions[last_digit]}"
                     break
