@@ -15,7 +15,7 @@ def validate_num(num: str):
     return validate_num(num)
 
 def val_gender():
-    gender = input("Enter your gender (M - Male, F - Female)")
+    gender = input("Enter your gender (M - Male, F - Female): ")
     if gender in ["M", "F"]:
         return gender
     print("ERROR: Enter either \"M\" or \"F\" as values")
@@ -46,14 +46,16 @@ if todo == "Save":
     gender = val_gender()
     marital_status = val_mar()
     email = val_email()
-
-    with open("./Week_3_ATS/day_2/class_work.csv", 'a', newline='') as f:
-        headers = ["first_name", "last_name", "age", "occupation", "dob", "gender", "marital_status", "email"]
-        handler = csv.DictWriter(f, fieldnames=headers)
-        handler.writeheader()
-        handler.writerow({"first_name": first_name, "last_name": last_name, 
+    
+    headers = ["first_name", "last_name", "age", "occupation", "dob", "gender", "marital_status", "email"]
+    data = {"first_name": first_name, "last_name": last_name, 
                         "age": age, "occupation": occupation, "dob": dob,
-                        "gender": gender, "marital_status": marital_status, "email": email})
+                        "gender": gender, "marital_status": marital_status, "email": email}
+
+    with open("./Week_3_ATS/day_2/class_work.csv", 'a', newline='') as f:   
+        handler = csv.DictWriter(f, fieldnames=headers)
+        # handler.writeheader()
+        handler.writerow(data)
         f.close()
 elif todo == "Search":
     search_term = input("Enter search term: ").lower()
@@ -66,14 +68,7 @@ elif todo == "Search":
             if search_term in row['first_name'].lower() or row['last_name'].lower() or row['email'].lower():
                 print(row)
             else:
-                print("Such record doesn't exist in our csv")
-            
-
-    
-    
-    
-    
-            
+                print("Such record doesn't exist in our csv")   
 
 
 
