@@ -19,4 +19,4 @@ print(' - Apple Pies     ' + str(totalBrought(allGuests, 'apple pies')))
 
 spam = {}
 spam.setdefault("color", "black")
-pprint.pprint(allGuests)
+# pprint.pprint(allGuests)
