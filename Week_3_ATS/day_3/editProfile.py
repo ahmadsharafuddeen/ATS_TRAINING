@@ -1,7 +1,6 @@
 # todo: A signup and sign-in program that takes info:
 
 import csv, sys
-from fileinput import filename
 from tempfile import NamedTemporaryFile
 import shutil
 # todo: login credentials. Add validation. Password must be a minimum of 8 characters
@@ -36,7 +35,7 @@ def get_str_input(name):
     str_val = input(f"Enter {name}: ")
     if str_val.isalnum():
         return str_val
-    print(f"{name} must be letters only!")
+    print(f"{name} must contain letters and/or numbers only!")
     return get_str_input(name)
 
 def get_gender():
@@ -90,8 +89,7 @@ def signin():
                 edit_profile(username, "password", password=password)
             elif option == 3:
                 print(f"Logging you out, {username}")
-                sys.exit()
-            
+                sys.exit()   
             return 
     print(f"User Account not found. Signup first")
     return    
