@@ -1,20 +1,17 @@
 # todo: A signup and sign-in program that takes info:
 
-
 import csv
 # todo: login credentials. Add validation. Password must be a minimum of 8 characters
 def validate_username():
     username = input(f"Enter username: ")
-    
     # check if username exists in csv
-    with open("./Week_3_ATS/day_2/login_credentials.csv", 'r') as f:
+    with open("./Week_3_ATS/day_2/user_db.csv", 'r') as f:
         handler = csv.DictReader(f) 
         for row in handler:
             if row['username'] == username:
                 print("INVALID: User with username already exists in DB!")
                 return validate_username()
     return username
-
 
 def validate_str(name):
     str_val = input(f"Enter {name}: ")
@@ -48,7 +45,7 @@ def signup():
     headers = ["username", "first name", "last name", "password", "password confirm"]
     data = {"username": username, "first name": first_name, "last name": last_name, "password": password, "password confirm": confirm_pass}
 
-    with open("./Week_3_ATS/day_2/login_credentials.csv", 'a', newline='') as f:   
+    with open("./Week_3_ATS/day_2/user_db.csv", 'a', newline='') as f:   
         handler = csv.DictWriter(f, fieldnames=headers)
         # handler.writeheader()
         
@@ -60,20 +57,21 @@ def signup():
 def signin():
     username = input("Enter your username: ")
     password = input("Enter your password: ")
-    with open("./Week_3_ATS/day_2/login_credentials.csv", 'r') as f:
+    with open("./Week_3_ATS/day_2/user_db.csv", 'r') as f:
         handler = csv.DictReader(f) 
         for row in handler:
             if row['username'] == username and row['password'] == password:
-                return f"Login Successful!\nWelcome back {row['first name']}"
-        return f"User Account not found. Signup first"   
-    
+                print(f"Login Successful!\nWelcome back {row['first name']}")
+                return 
+        print(f"User Account not found. Signup first")
+        return    
 
 def main():
-    todo = input("What do you want to do: Type  \"1\" to Signup or \"2\" to Signin: ")
+    todo = input("Type  \"1\" to Signup or \"2\" to Signin: (Signin is set by default!): ")
     if todo == "1":
         signup() 
-    elif todo == "2":
-        print(signin())
+    else:
+        signin()
         
         
 if __name__ == '__main__':

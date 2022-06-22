@@ -15,17 +15,17 @@ def validate_num(num: str):
     return validate_num(num)
 
 def val_gender():
-    gender = input("Enter your gender (M - Male, F - Female): ")
+    gender = input("Enter your gender (male/female): ")
     if gender in ["M", "F"]:
         return gender
-    print("ERROR: Enter either \"M\" or \"F\" as values")
+    print("ERROR: Enter either \"male\" or \"female\" as values")
     return val_gender()
 
 def val_mar():
-    gender = input("Enter your marital status (M - Married, S - Single): ")
-    if gender in ["M", "S"]:
+    gender = input("Enter your marital status (married/single): ")
+    if gender in ["married", "single"]:
         return gender
-    print("ERROR: Enter either \"M\" or \"S\" as values")
+    print("ERROR: Enter either \"married\" or \"married\" as values")
     return val_mar()
 
 def val_email():
