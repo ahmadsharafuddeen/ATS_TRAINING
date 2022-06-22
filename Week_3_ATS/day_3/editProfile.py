@@ -19,7 +19,7 @@ def read_data():
 def save_data(headers, data):
     with open(csv_filename, 'a', newline='') as f:   
         handler = csv.DictWriter(f, fieldnames=headers)
-        handler.writeheader()
+        # handler.writeheader()
         handler.writerow(data)
     
 def get_username():
@@ -53,7 +53,7 @@ def get_password():
     password = input("Enter an 8-digit password: (Passwords must be alphanumeric!): ")
     if password.isalnum() and len(password) >= 8:
         return password
-    print("ERROR: Incrrect format. Re-enter password again!")
+    print("ERROR: Incorrect format. Re-enter password again!")
     return get_password()
     
 def get_validated_pw(password):
@@ -61,7 +61,7 @@ def get_validated_pw(password):
     if newpassword == password:
         return newpassword
     print("ERROR: password mismatch!")
-    return get_validated_pw()
+    return get_validated_pw(password)
 
 def signup():
     # todo: On signup, username, first name, last name, password and confirm password and saves it in a file

@@ -15,7 +15,7 @@ def validate_username():
 
 def validate_str(name):
     str_val = input(f"Enter {name}: ")
-    if str_val.isalpha():
+    if str_val.isalnum():
         return str_val
     print(f"{name} must be letters only!")
     return validate_str(name)
