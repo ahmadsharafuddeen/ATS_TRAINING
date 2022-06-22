@@ -1,5 +1,6 @@
 # todo: A signup and sign-in program that takes info:
 
+from audioop import add
 import csv, sys
 from tempfile import NamedTemporaryFile
 import shutil
@@ -38,9 +39,12 @@ def get_str_input(name):
     print(f"{name} must contain letters and/or numbers only!")
     return get_str_input(name)
 
+def get_optional(name):
+    return input(f"Enter {name}: ")  
+
 def get_gender():
     gender = input("Enter your gender (male/female): ")
-    if gender in ["M", "F"]:
+    if gender in ["male", "female"]:
         return gender
     print("ERROR: Enter either \"male\" or \"female\" as values")
     return get_gender()
@@ -97,8 +101,8 @@ def signin():
 def edit_profile(username: str, set, password = ''):
     if set == "profile": 
         phone_num = get_str_input("phone number")
-        address = get_str_input("address") or ''
-        dob = get_str_input("dob") or ''
+        address = get_optional("address")
+        dob = get_optional("dob")
         gender = get_gender()
     elif set == "password":
         old_password = input("Enter your old password: ")
@@ -114,7 +118,11 @@ def edit_profile(username: str, set, password = ''):
         for row in reader:
             if row['username'] == username:
                 if set == "profile":
-                    row["phone_num"], row["address"], row["dob"], row["gender"] = phone_num, address, dob, gender
+                    if address != '':
+                        row["address"] = address
+                    if dob != '':
+                        row["dob"] = dob
+                    row["gender"], row["phone_num"], =  gender, phone_num
                 elif set == "password":
                     row["password"], row["password confirm"] = new_password, new_password
             row = {"username": row["username"], "first name": row["first name"], "last name": row["last name"], 
@@ -124,16 +132,6 @@ def edit_profile(username: str, set, password = ''):
     shutil.move(tempfile.name, csv_filename)
     print(f"{username}'s profile editted successfully.")
     
-    
-def change_pw(row: dict):
-    pass
-
-def logout(profile):
-    pass
-    
-def siginin_options(profile):
-    pass
-
 def main():
     todo = input("Type  \"1\" to Signup or \"2\" to Signin: (Signin is set by default!): ")
     if todo == "1":
