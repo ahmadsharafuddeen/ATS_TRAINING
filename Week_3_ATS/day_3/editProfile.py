@@ -1,7 +1,7 @@
 # todo: A signup and sign-in program that takes info:
 import csv, sys, shutil
 from tempfile import NamedTemporaryFile
-# import pyinputplus as pyip
+import pyinputplus as pyip
 # todo: login credentials. Add validation. Password must be a minimum of 8 characters
 
 # global vars

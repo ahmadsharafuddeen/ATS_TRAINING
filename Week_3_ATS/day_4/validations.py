@@ -27,16 +27,15 @@ def save_data(headers, data):
         # handler.writeheader()
         handler.writerow(data)
 
+def check_username(username):
+     profiles = read_data()
+     for row in profiles:
+        if row['username'] == username:
+            raise Exception("INVALID: User with username already exists in DB!")
+        return username
 
 def get_username():
-    username = pyip.inputStr(prompt="Enter username: ")
-    # check if username exists in csv
-    profiles = read_data()
-    for row in profiles:
-        if row['username'] == username:
-            print("INVALID: User with username already exists in DB!")
-            return get_username()
-    return username
+    return pyip.inputCustom(check_username, prompt="Enter username: ")
 
 
 def get_str_input(name):
@@ -44,7 +43,7 @@ def get_str_input(name):
 
 
 def get_optional(name):
-    return pyip.inputName(f"Enter {name}: ", blank=True)
+    return pyip.inputStr(f"Enter {name}: ", blank=True)
 
 
 def get_gender():
@@ -52,19 +51,20 @@ def get_gender():
 
 
 def get_phone_num():
-    return pyip.inputPhone(prompt="Enter your phone number: ")
+    return pyip.inputStr(prompt="Enter your phone number: ")
 
 
 def get_date_of_birth():
     return pyip.inputDate(prompt="Enter your dob e.g.: 03/10/99", formats=["%m/%d/%y"], blank=True)
 
 
+def check_password(password):
+    if not password.isalnum() and len(password) < 8:
+        raise Exception("ERROR: Incorrect format. Re-enter password again!")
+    return password
+
 def get_password():
-    password = pyip.inputPassword("Enter an 8-digit password: (Passwords must be alphanumeric!): ")
-    if password.isalnum() and len(password) >= 8:
-        return password
-    print("ERROR: Incorrect format. Re-enter password again!")
-    return get_password()
+    return pyip.inputCustom(check_password, prompt="Enter an 8-digit password: (Passwords must be alphanumeric!): ")
 
 
 def get_validated_pw(password):
@@ -93,18 +93,18 @@ def signup():
 
 # todo: on signin, it takes username and password  and return whether a message saying login successful or invalid
 def signin():
-    username = pyip.inputName("Enter your username: ")
+    username = pyip.inputStr("Enter your username: ")
     password = pyip.inputPassword("Enter your password: ")
 
     for row in read_data():
         if row['username'] == username and row['password'] == password:
             print(f"Login Successful!\nWelcome back {row['first name']}")
 
-            option = pyip.inputInt(prompt="Enter 1- Edit Profile, 2- Change Password, 3- Logout: ", min=1, max=3)
+            option = pyip.inputInt(prompt="Enter: \n1- Edit Profile\n2- Change Password\n3- Logout\n", min=1, max=3)
             if option == 1:
-                edit_profile(username, "profile")
+                edit_profile(username, set="profile")
             elif option == 2:
-                edit_profile(username, "password", password=password)
+                edit_profile(username, set="password", password=password)
             elif option == 3:
                 print(f"Logging you out, {username}")
                 sys.exit()
@@ -115,7 +115,7 @@ def signin():
 
 def edit_profile(username: str, set, password=''):
     if set == "profile":
-        phone_num = get_phone_num("phone number")
+        phone_num = get_phone_num()
         address = get_optional("address")
         dob = get_date_of_birth()
         gender = get_gender()

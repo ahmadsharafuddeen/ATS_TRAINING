@@ -1,3 +1,4 @@
+from decimal import DivisionByZero
 import pyinputplus as pyip
 
 
@@ -9,18 +10,22 @@ Please type in the math operation you would like to complete:
 / for division
 ''', choices=['+', '-', '*', '/'])
 
-first_num = pyip.inputNum(prompt="Enter the first number: ")
-second_num = pyip.inputNum(prompt="Enter the second number: ")
+numbers = pyip.inputStr("Enter a comma-separated numbers to calculate: ")
+cleaned_num = numbers.split(',')
+# print(cleaned_num)
 
-if operation == '*':
-    print(f"{first_num} {operation} {second_num} = ")
-    print(first_num * second_num)
-elif operation == '/':
-    print(f"{first_num} {operation} {second_num} = ")
-    print(first_num / second_num)
-elif operation == '+':
-    print(f"{first_num} {operation} {second_num} = ")
-    print(first_num + second_num)
-elif operation == '-':
-    print(f"{first_num} {operation} {second_num} = ")
-    print(first_num - second_num)
+result = int(cleaned_num[0])
+for i in range(1, len(cleaned_num)):
+    if operation == '+':
+        result += int(cleaned_num[i])
+    if operation == '-':
+        result -= int(cleaned_num[i])
+    if operation == '*':
+        result *= int(cleaned_num[i])
+    if operation == '/':
+        try: 
+            result /= int(cleaned_num[i]) 
+        except ZeroDivisionError:
+            print("Cannot divide by Zero")
+    
+print(result)         
