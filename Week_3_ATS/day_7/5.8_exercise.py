@@ -13,7 +13,6 @@ rand_nums.sort()
 print(rand_nums)
 
 def find_duplicate(list):
-    duplicates = []
     for i in range(19):
         if list[i] != list[i + 1]:
             continue 

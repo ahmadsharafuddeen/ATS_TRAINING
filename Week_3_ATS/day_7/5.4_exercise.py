@@ -1,9 +1,7 @@
-from operator import index
-from socket import herror
-from weakref import ref
 import pandas as pd
 
-
+# create list of lists
+# each salesperson passes in a slip for each different type of product sold
 sales_persons = [
     [['S01', 'P01', 5], ['S01', 'P02', 3], ['S01', 'P01', 2], ['S01', 'P03', 9], ['S01', 'P03', 2], ['S01', 'P04', 3]],
     [['S02', 'P01', 4], ['S02', 'P02', 7], ['S02', 'P01', 9], ['S02', 'P03', 3], ['S02', 'P03', 7], ['S02', 'P04', 2]],
@@ -37,7 +35,7 @@ print(reformat)
 
 # pprint.pprint(reformat)
 df  = pd.DataFrame(reformat, index=['P01', 'P02', 'P03', 'P04'])
-df.loc[len(df.index)] = [df['S01'].sum(), df['S02'].sum(), df['S03'].sum(), df['S04'].sum()]
+df.loc["Sales Sum"] = [df['S01'].sum(), df['S02'].sum(), df['S03'].sum(), df['S04'].sum()]
 df['P_SUM'] = df.sum(axis=1)
 print(df)
 
