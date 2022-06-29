@@ -1,4 +1,5 @@
 from datetime import date
+import pprint
 from turtle import back
 
 backend_dict = {
@@ -105,12 +106,29 @@ class Student:
                                'height': height, 'weight': weight, 'age': age}
         print(f"{self.first_name} just added student '{first_name}'")
         return backend_dict
+    
     # L) Remove profile from the class
     def remove_student(self):
         del backend_dict[self.email]
         return backend_dict
-
-# G) Function that will group profiles by birth month
+    
+    # M) calculate the avg of ages
+    def avg_age_stud(self):
+        sum_ages = 0
+        for profile in backend_dict.keys():
+            sum_ages += backend_dict[profile]['age']
+        return f"The average age of the students is {int(sum_ages/len(backend_dict))}"           
+    
+    # N) Function that will group profiles by birth month
+    def group_stud_by_month(self):
+        groups = {1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 7: {}, 8: {}, 9: {}, 10: {}, 11: {}, 12: {}}
+        
+        for profile in backend_dict.keys():
+            profile_month = int(backend_dict[profile]['day_month'].split('-')[1])
+            groups[profile_month][profile] = backend_dict[profile]     
+        pprint.pprint(groups)
+        
+        
     
 stud_01 = Student('ahmad@gmail.com')
 stud_02 = Student('awwal@gmail.com')
@@ -123,11 +141,9 @@ print(stud_01.update_names("Muhammad", "Raji"))
 print(stud_01.stud_initials())
 print(stud_01.calculate_bmi())
 print(stud_02.attendance)
-print(stud_02.add_new_stud('yaasir@gmail.com', 'Yaasir', 'Adewale', '04-09', 3, 167, 62, 23))
-
-# H) calculate the avg of ages
-avg_age = int((stud_01.age + stud_02.age) / 2)
-print(f"Average age of students is {avg_age}")
+# print(stud_02.add_new_stud('yaasir@gmail.com', 'Yaasir', 'Adewale', '04-09', 3, 167, 62, 23))
+print(stud_01.avg_age_stud())
+stud_01.group_stud_by_month()
 
 
     
