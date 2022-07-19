@@ -1,0 +1,1 @@
+print([2000 + i for i in range(20)])

@@ -1,18 +1,7 @@
-import random
-import string
+list_new = [[1,2,3,4], [4,5,6], [7,8,9,6,4]]
 
-def gen_password():
-    ''' returns an 8-digit generated strong password'''
-    all_chars = string.ascii_letters
-    digits = string.digits
-    spec_chars  = string.punctuation
-    
-    
-    # password = ''
-    # while password < 8:
-        
-    
-    
-    # print(string.ascii_letters)
+# print(len(list_new))
 
-gen_password()
+for i in range(len(list_new)):
+    for j in range(len(list_new[i])):
+        print(list_new[i][j])

@@ -4,23 +4,25 @@ import pyinputplus as pyip
 
 class Profile:
     # class variables
-    tempfile = NamedTemporaryFile(mode='w', delete=False)
-    csv_filename = "./Week_4_ATS/day_2/updated_user_db.csv"
-    headers = ["username", "first name", "last name", "password", "phone_num", "address", "dob", "gender"]
+    TEMPFILE = NamedTemporaryFile(mode='w', delete=False)
+    CSV_FILENAME = "./Week_4_ATS/day_2/updated_user_db.csv"
+    HEADERS = ["username", "first name", "last name", "password", "phone_num", "address", "dob", "gender"]
     
-    def read_data(self):
-        with open(self.csv_filename, 'r') as f:
+    @classmethod
+    def _read_data(self):
+        with open(self.CSV_FILENAME, 'r') as f:
             csv_data = csv.DictReader(f)
             return list(csv_data)
-        
-    def save_data(self, data):
-        with open(self.csv_filename, 'a', newline='') as f:
-            handler = csv.DictWriter(f, fieldnames=self.headers)
+     
+    @classmethod   
+    def _save_data(self, data):
+        with open(self.CSV_FILENAME, 'a', newline='') as f:
+            handler = csv.DictWriter(f, fieldnames=self.HEADERS)
             # handler.writeheader()
             handler.writerow(data)
     
     def __init__(self, username, first_name, last_name, password , phone_num='', address='', dob='', gender='') -> None:
-        self._username = username
+        self.___username = username
         self.first_name = first_name
         self.last_name = last_name
         self.password = password
@@ -28,7 +30,7 @@ class Profile:
         self._address = address
         self._dob = dob
         self.gender = gender
-        self.data  = {"username": self._username, "first name": self.first_name, "last name": self.last_name, "password": self.password, "phone_num": self.phone_num,
+        self.data  = {"username": self.____username, "first name": self.first_name, "last name": self.last_name, "password": self.password, "phone_num": self.phone_num,
                       "address": self._address, "dob": self.dob, "gender": self.gender}
     
     @property
@@ -41,7 +43,7 @@ class Profile:
      
     @property
     def username(self):
-        return self._username
+        return self.___username
         
     @property
     def first_name(self):
@@ -95,15 +97,15 @@ class Profile:
         
     # signup method
     def signup(self, confirm_pass):
-        profiles = self.read_data()
+        profiles = self._read_data()
         for row in profiles:
-            if row['username'] == self._username:
+            if row['username'] == self.___username:
                 print("INVALID: User with username already exists in DB!")
                 return  
         if confirm_pass != self.password:
             print("Password Mismtch: Confirm Password again!")
             return 
-        self.save_data(self.data)
+        self._save_data(self.data)
         print("Signup Successful, Sign In Please!")
         username = pyip.inputStr("Enter your username: ")
         password = pyip.inputPassword("Enter your password: ")
@@ -111,7 +113,7 @@ class Profile:
         
     # signin method
     def signin(self, username, password):
-        for row in self.read_data():
+        for row in self._read_data():
             if row['username'] == username and row['password'] == password:
                 print(f"Login Successful!\nWelcome back {row['first name']}")
                 
@@ -145,9 +147,9 @@ class Profile:
                 print("The password you entered is incorrect!")  
                 return
         
-        with open(self.csv_filename, 'r') as csvfile, self.tempfile:
-            reader = csv.DictReader(csvfile, fieldnames=self.headers)
-            writer = csv.DictWriter(self.tempfile, fieldnames=self.headers)
+        with open(self.CSV_FILENAME, 'r') as csvfile, self.TEMPFILE:
+            reader = csv.DictReader(csvfile, fieldnames=self.HEADERS)
+            writer = csv.DictWriter(self.TEMPFILE, fieldnames=self.HEADERS)
             for row in reader:
                 if row['username'] == self.username:
                     if set == 'profile':
@@ -158,7 +160,7 @@ class Profile:
                 row = {"username": row["username"], "first name": row["first name"], "last name": row["last name"], "password": row["password"],
                         "phone_num": row["phone_num"], "address": row["address"], "dob": row["dob"], "gender": row["gender"]}
                 writer.writerow(row)
-        shutil.move(self.tempfile.name, self.csv_filename)
+        shutil.move(self.TEMPFILE.name, self.CSV_FILENAME)
         print(f"{self.username}'s profile editted successfully.")
 
     
@@ -168,5 +170,5 @@ profile2 = Profile('awwalade', 'Awwal', 'Adeleke', 'AdElEke21')#, '07066402941',
 # profile2.signin(input('Username: '), input('Password: '))
 
 profile3 = Profile('toyin', 'Toyin', 'Sam', 'Toyin099')
-profile3.signup('Toyin099')
+profile3.signup('Toyin099').
 
