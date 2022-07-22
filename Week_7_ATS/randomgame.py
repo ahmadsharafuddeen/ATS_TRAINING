@@ -1,26 +1,36 @@
 import random
 import sys
 
-start = sys.argv[1]
-end = sys.argv[2]
+start = input('Enter start: ')
+end = input('Enter end: ')
 
-answer = random.randint(int(start), int(end))
-while True:
-    try:
-        guess = int(input(f'Guess a number between {start}~{end}: '))
-        if 0 < guess < 11:
-            if guess == answer:
-                print('You\'re a genius!')
-                break
-            elif guess > answer:
-                print('Guess greater than random number')
-                continue
+
+def within_range(guess):
+    return 0 < guess < 11
+
+def is_correct(guess, answer):
+    if within_range(guess):
+        return guess == answer
+    return False
+    
+if __name__ == '__main__':
+    answer = random.randint(int(start), int(end))
+    while True:
+        try:
+            guess = int(input(f'Guess a number between {start}~{end}: '))
+            if within_range(guess):
+                if is_correct(guess, answer):
+                    print('You\'re a genius!')
+                    break
+                elif guess > answer:
+                    print('Guess greater than random number')
+                    continue
+                else:
+                    print('Guess lesser than random number')
+                    continue
             else:
-                print('Guess lesser than random number')
+                print()
                 continue
-        else:
-            print('Hey bozo, I said 1~10')
+        except ValueError:
+            print('Please enter a number!')
             continue
-    except ValueError:
-        print('Please enter a number!')
-        continue

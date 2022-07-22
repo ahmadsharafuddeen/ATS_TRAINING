@@ -12,6 +12,7 @@ class Profile:
     def _read_data(self):
         with open(self.CSV_FILENAME, 'r') as f:
             csv_data = csv.DictReader(f)
+            Profile.A
             return list(csv_data)
      
     @classmethod   
@@ -22,7 +23,7 @@ class Profile:
             handler.writerow(data)
     
     def __init__(self, username, first_name, last_name, password , phone_num='', address='', dob='', gender='') -> None:
-        self.___username = username
+        self.__username = username
         self.first_name = first_name
         self.last_name = last_name
         self.password = password
@@ -30,7 +31,7 @@ class Profile:
         self._address = address
         self._dob = dob
         self.gender = gender
-        self.data  = {"username": self.____username, "first name": self.first_name, "last name": self.last_name, "password": self.password, "phone_num": self.phone_num,
+        self.data  = {"username": self.__username, "first name": self.first_name, "last name": self.last_name, "password": self.password, "phone_num": self.phone_num,
                       "address": self._address, "dob": self.dob, "gender": self.gender}
     
     @property
@@ -43,7 +44,7 @@ class Profile:
      
     @property
     def username(self):
-        return self.___username
+        return self.__username
         
     @property
     def first_name(self):
@@ -71,7 +72,7 @@ class Profile:
     
     @password.setter
     def password(self, value):
-        if len(value) < 8 or not value.isalnum():
+        if len(value) < 7 or not value.isalnum():
             raise ValueError("Password must be at least 8 alpha-numeric characters!")
         self._password = value
         
@@ -99,7 +100,7 @@ class Profile:
     def signup(self, confirm_pass):
         profiles = self._read_data()
         for row in profiles:
-            if row['username'] == self.___username:
+            if row['username'] == self.__username:
                 print("INVALID: User with username already exists in DB!")
                 return  
         if confirm_pass != self.password:
@@ -170,5 +171,5 @@ profile2 = Profile('awwalade', 'Awwal', 'Adeleke', 'AdElEke21')#, '07066402941',
 # profile2.signin(input('Username: '), input('Password: '))
 
 profile3 = Profile('toyin', 'Toyin', 'Sam', 'Toyin099')
-profile3.signup('Toyin099').
+# profile3.edit_profile('profile')    
 

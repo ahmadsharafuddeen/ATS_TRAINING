@@ -17,6 +17,8 @@ class RationalNumber:
         return f"First Fraction: ({self.numerator1 // gcf1}/{self.denom1 // gcf1}), " \
                f"Second Fraction: ({self.numerator2 // gcf2}/{self.denom2 // gcf2})"
 
+    
+
     def add(self):
         added_nums = self.factorial_mult1 + self.factorial_mult2
         gcf = RationalNumber.det_gcf(added_nums, self.denom_mult)

@@ -20,6 +20,7 @@ class User:
 
         User.ALL_USERS.append(self)
 
+
     @property
     def name(self):
         return self.__name
@@ -106,3 +107,5 @@ class Transaction(User):
 user = User('Ahmad', 'ahmadsharafudeen98@gmail.com', Decimal('3000.00'))
 user.create_user()
 print(user.user_id)
+
+print(User.generate_userid())
