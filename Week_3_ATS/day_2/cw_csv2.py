@@ -1,6 +1,7 @@
 # todo: A signup and sign-in program that takes info:
 
 import csv
+import pandas
 # todo: login credentials. Add validation. Password must be a minimum of 8 characters
 def validate_username():
     username = input(f"Enter username: ")

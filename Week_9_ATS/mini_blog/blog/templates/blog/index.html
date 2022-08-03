@@ -1,0 +1,14 @@
+{% extends "blog/base_generic.html" %}
+
+{% block content %}
+  <h1>Mini Blog Home</h1>
+  <p>Welcome to our Blog site, a website developed by <em>Ahmad Sharaf</em>!</p>
+  <h2>Dynamic content</h2>
+  <p>The blog has the following record counts:</p>
+  <ul>
+    <li><strong>Blog Posts:</strong> {{ num_blogs }}</li>
+    <li><strong>Bloggers:</strong> {{ num_bloggers }}</li>
+    <li><strong>Comments:</strong> {{ num_comments }}</li>
+  </ul>
+    <p>You have visited this page {{ num_visits }} time{{ num_visits|pluralize }}.</p>
+{% endblock %}

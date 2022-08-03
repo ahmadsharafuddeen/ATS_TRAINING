@@ -1,0 +1,50 @@
+{% extends "blog/base_generic.html" %}
+{% load static %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static "css/blog_detail.css" %}">
+{% endblock %}
+
+{% block content %}
+  <h1>Title: {{ blog.title }}</h1>
+  {% if blog.image.url %}
+    <img class="img-fluid" src="{{ blog.image.url }}" alt="Blog Image">
+  {% endif %}
+
+  <p><strong>Author:</strong> <a href="{% url "blog:author-detail" blog.author.id %}">{{ blog.author.first_name }} {{ blog.author.last_name }}</a></p> <!-- author detail link not yet defined -->
+  <p><strong>Excerpt:</strong> {{ blog.excerpt }}</p>
+  <p><strong>Content: </strong> {{ blog.content }}</p>
+  <p><strong>Published Date:</strong> {{ blog.post_date }}</p>
+
+  <div style="margin-left:20px;margin-top:20px">
+    <h4>Comments</h4>
+
+    {% for comment in blog.comments.all %}
+      <hr>
+      <p class="text-success">
+        {{ comment.text }}
+      </p>
+      <p><strong>Post Date:</strong> {{ comment.post_date }}</p>
+      <p><strong>By:</strong> {{ comment.comment_owner.last_name }}</p>
+    {% endfor %}
+    <hr>
+    <p class="text-muted"><strong>{{ blog.comments.all.count }} Comment{{ blog.comments.all.count|pluralize }} </strong></p>
+  </div>
+  <section id="comment-form">
+    <h2>Post Your Comment</h2>
+    <form action="{{ blog.get_absolute_url }}" method="post">
+        {% csrf_token %}
+        {% for form_field in comment_form %}
+            <div class="form-control {% if form_field.errors %}invalid{% endif %}">
+                {{ form_field.label_tag }}
+                {{ form_field }}
+                {{ form_field.errors }}
+            </div>
+        {% endfor %}
+        <button>Save Comment</button>
+    </form>
+  </section>
+{% endblock content %}
+
+
+
