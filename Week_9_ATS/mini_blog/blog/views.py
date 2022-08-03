@@ -9,6 +9,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib.auth import logout
 
 from django.contrib.auth.models import User, AnonymousUser
 from .models import Blog, Comment, Profile
@@ -48,11 +49,13 @@ class BlogListView(ListView):
 class ChangePasswordView(SuccessMessageMixin, PasswordChangeView):
     template_name = "blog/change_password.html"
     success_message = "Successfully Changed Your Password"
-    success_url = reverse_lazy("author-detail")
+    success_url = reverse_lazy("login")
 
-    def get_success_url(self):
-        user_id = self.request.user.id
-        return reverse_lazy("blog:author-detail", kwargs={"pk": user_id})
+    def form_valid(self, form):
+        form.save()
+        self.request.session.flush()
+        logout(self.request)
+        return super(ChangePasswordView, self).form_valid(form)
 
 
 class BlogAuthorDetailView(View):
