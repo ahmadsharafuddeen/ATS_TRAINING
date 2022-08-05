@@ -1,11 +1,11 @@
 from django import forms
-from .models import Comment, Profile
+from .models import Comment, Profile, Blog
 from django.contrib.auth.models import User
 
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
-        exclude = ["post_date"]
+        exclude = ["post_date", "is_delete"]
         labels = {
             "text": "Your Message",
         }
@@ -26,3 +26,8 @@ class ProfileForm(forms.ModelForm):
         model = Profile
         fields = ["passport"]
 
+
+class BlogUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Blog
+        exclude = ["post_date", "author"]

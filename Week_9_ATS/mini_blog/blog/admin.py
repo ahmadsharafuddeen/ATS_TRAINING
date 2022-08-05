@@ -15,7 +15,7 @@ class BlogAdmin(admin.ModelAdmin):
 
 
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ("comment_owner", "blog", "text")
+    list_display = ("comment_owner", "blog", "text", "is_delete")
 
 
 admin.site.register(Blog, BlogAdmin)

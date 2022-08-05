@@ -8,12 +8,22 @@
   display: block;
 }
 
+.form-control [for="id_is_delete"] {
+  display: inline-block;
+}
+
+.form-control [type="checkbox"] {
+  width: auto;
+  display: inline;
+  vertical-align: middle;
+  margin-inline-start: 3px;
+}
 
 .form-control input,
 .form-control textarea{
   display: block;
-  width: 100%;
   font: inherit;
+  width: 100%;
   padding: 0.25rem;
   border-radius: 6px;
   border: 1px solid #ccc;
@@ -98,5 +108,9 @@ input#passport-clear_id {
 
 label[for=passport-clear_id] {
   margin-top: -2rem;
+  display: inline-block;
+}
+
+.admin-comment {
   display: inline-block;
 }

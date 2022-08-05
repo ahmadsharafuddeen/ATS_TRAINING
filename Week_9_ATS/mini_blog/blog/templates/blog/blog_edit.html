@@ -1,0 +1,23 @@
+{% extends "blog/base_generic.html" %}
+{% load static %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static "css/blog_detail.css" %}">
+{% endblock %}
+
+{% block content %}
+<section id="comment-form">
+        <h2>Update Blog</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% for form_field in form %}
+                <div class="form-control {% if form_field.errors %}invalid{% endif %}">
+                    {{ form_field.label_tag }}
+                    {{ form_field }}
+                    {{ form_field.errors }}
+                </div>
+            {% endfor %}
+            <button>Save Blog</button>
+        </form>
+</section>
+{% endblock %}

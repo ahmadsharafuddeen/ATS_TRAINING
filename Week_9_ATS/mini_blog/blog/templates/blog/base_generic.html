@@ -23,7 +23,8 @@
 
             {% if user.is_authenticated %}
              <li>User: {{ user.first_name }}</li>
-             <li><a href="{% url 'blog:password_change'%}?next={{request.path}}">Change Password</a></li>
+             <li><a href="{% url 'blog:profile_edit'%}">Edit Profile</a></li>
+                <li><a href="{% url 'blog:password_change'%}?next={{request.path}}">Change Password</a></li>
              <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
            {% else %}
              <li><a href="{% url 'login'%}?next={{request.path}}">Login</a></li>

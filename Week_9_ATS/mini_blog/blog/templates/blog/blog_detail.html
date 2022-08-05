@@ -16,19 +16,28 @@
   <p><strong>Content: </strong> {{ blog.content }}</p>
   <p><strong>Published Date:</strong> {{ blog.post_date }}</p>
 
+  {% if blog.author == current_user %}
+      <a href="{% url "blog:update-blog" blog.slug %}">Edit Blog</a>
+  {% endif %}
+
   <div style="margin-left:20px;margin-top:20px">
     <h4>Comments</h4>
-
-    {% for comment in blog.comments.all %}
-      <hr>
-      <p class="text-success">
-        {{ comment.text }}
-      </p>
-      <p><strong>Post Date:</strong> {{ comment.post_date }}</p>
-      <p><strong>By:</strong> {{ comment.comment_owner.last_name }}</p>
-    {% endfor %}
-    <hr>
-    <p class="text-muted"><strong>{{ blog.comments.all.count }} Comment{{ blog.comments.all.count|pluralize }} </strong></p>
+        {% for comment in comments %}
+          <hr>
+          <p class="text-success">
+            {{ comment.text }}
+          </p>
+          <p><strong>Post Date:</strong> {{ comment.post_date }}</p>
+          <p><strong>By:</strong> {{ comment.comment_owner.first_name }}</p>
+          {% if comment.blog.author == current_user  %}
+              <form method="post" action="{% url "blog:toggle-comment" slug comment.id %}" class="admin-comment">
+              {% csrf_token %}
+                    <input type="submit" value="{% if comment.is_delete %}Unhide{% else %}Hide{% endif %}">
+              </form>
+          {% endif %}
+        {% endfor %}
+        <hr>
+        <p class="text-muted"><strong>{{ comments.count }} Comment{{ comments.count|pluralize }} </strong></p>
   </div>
   <section id="comment-form">
     <h2>Post Your Comment</h2>

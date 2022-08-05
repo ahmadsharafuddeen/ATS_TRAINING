@@ -1,5 +1,5 @@
 import os
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 
 """
 Django settings for mini_blog project.
@@ -129,3 +129,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_ROOT = BASE_DIR / "uploads"
 MEDIA_URL = "/files/"
 LOGIN_REDIRECT_URL = reverse_lazy("blog:bloggers-list")
+LOGOUT_REDIRECT_URL = "blog/blogs"

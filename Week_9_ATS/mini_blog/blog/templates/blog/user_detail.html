@@ -1,10 +1,6 @@
 {% extends "blog/base_generic.html" %}
 {% load static %}
 
-{% block styles %}
-    <link rel="stylesheet" href="{% static "css/blog_detail.css" %}">
-{% endblock %}
-
 {% block content %}
   <h1>Blogger's Email: {{ user_detail.email }}</h1>
 
@@ -15,15 +11,15 @@
   <p><strong>Titles of Blog Posts:</strong> {{ user_detail.blogs.all|join:", " }}</p>
   {% if profile.passport %}
     <p><strong>Passport Photo:</strong></p>
-    <img src="{{ profile.passport.url }}" class="img-thumbnail">
+    <img src="{{ profile.passport.url }}" class="img-thumbnail" alt="Blogger Passport">
   {% endif %}
 
 
   <div style="margin-left:20px;margin-top:20px">
     <h4>Blog Posts</h4>
-    {% if user_detail.blogs.all %}
+    {% if user_blogs %}
         <ul>
-        {% for blog in user_detail.blogs.all %}
+        {% for blog in user_blogs %}
           <hr>
           <li class="text-muted"><strong><a href="{% url "blog:blog-detail" blog.slug %}">{{ blog.title }}</a> ({{ blog.post_date }})</strong></li>
         {% endfor %}
@@ -32,26 +28,6 @@
         <hr>
         <p class="text-muted">You have no blog posts yet.</p>
     {% endif %}
-    <section id="comment-form">
-        <h2>Update Profile</h2>
-        <form method="post" action="{% url "blog:author-detail" user_detail.id %}" enctype="multipart/form-data">
-            {% csrf_token %}
-            {% for form_field in user_form %}
-                <div class="form-control {% if form_field.errors %}invalid{% endif %}">
-                    {{ form_field.label_tag }}
-                    {{ form_field }}
-                    {{ form_field.errors }}
-                </div>
-            {% endfor %}
-            {% for form_field in profile_form %}
-                <div class="form-control {% if form_field.errors %}invalid{% endif %}">
-                    {{ form_field.label_tag }}
-                    {{ form_field }}
-                    {{ form_field.errors }}
-                </div>
-            {% endfor %}
-            <button>Save Profile</button>
-        </form>
-    </section>
+
   </div>
 {% endblock %}
