@@ -9,6 +9,7 @@ urlpatterns = [
     path('blogger/<int:pk>', views.BlogAuthorDetailView.as_view(), name="author-detail"),
     path('bloggers/', views.BloggersListView.as_view(), name="bloggers-list"),
     path('<slug:slug>', views.BlogPostDetailPage.as_view(), name="blog-detail"),
+    path('<slug:slug>/post', views.comment_post_view, name="comment-post"),
     path('<slug:slug>/edit', views.UpdateBlogView.as_view(), name="update-blog"),
     path('<slug:slug>/<int:pk>/', views.ToggleComment.as_view(), name="toggle-comment"),
     path('password_change/', views.ChangePasswordView.as_view(), name="password_change"),

@@ -22,26 +22,28 @@
 
   <div style="margin-left:20px;margin-top:20px">
     <h4>Comments</h4>
-        {% for comment in comments %}
-          <hr>
-          <p class="text-success">
-            {{ comment.text }}
-          </p>
-          <p><strong>Post Date:</strong> {{ comment.post_date }}</p>
-          <p><strong>By:</strong> {{ comment.comment_owner.first_name }}</p>
-          {% if comment.blog.author == current_user  %}
-              <form method="post" action="{% url "blog:toggle-comment" slug comment.id %}" class="admin-comment">
-              {% csrf_token %}
-                    <input type="submit" value="{% if comment.is_delete %}Unhide{% else %}Hide{% endif %}">
-              </form>
-          {% endif %}
-        {% endfor %}
+        <div class="done">
+            {% for comment in comments %}
+              <hr>
+              <p class="text-success">
+                {{ comment.text }}
+              </p>
+              <p><strong>Post Date:</strong> {{ comment.post_date }}</p>
+              <p><strong>By:</strong> {{ comment.comment_owner.first_name }}</p>
+              {% if comment.blog.author == current_user  %}
+                  <form method="post" action="{% url "blog:toggle-comment" blog.slug comment.id %}" class="admin-comment">
+                  {% csrf_token %}
+                        <button>{% if comment.is_delete %}Unhide{% else %}Hide{% endif %}</button>
+                  </form>
+              {% endif %}
+            {% endfor %}
+        </div>
         <hr>
         <p class="text-muted"><strong>{{ comments.count }} Comment{{ comments.count|pluralize }} </strong></p>
   </div>
   <section id="comment-form">
     <h2>Post Your Comment</h2>
-    <form action="{{ blog.get_absolute_url }}" method="post">
+    <form id="post-form" action="{{ blog.get_absolute_url }}" method="post">
         {% csrf_token %}
         {% for form_field in comment_form %}
             <div class="form-control {% if form_field.errors %}invalid{% endif %}">
@@ -50,10 +52,52 @@
                 {{ form_field.errors }}
             </div>
         {% endfor %}
-        <button>Save Comment</button>
+        <button class="comments_submit">Save Comment</button>
     </form>
   </section>
 {% endblock content %}
+
+{% block javascript %}
+    <script>
+        $("#post-form").on("submit", function(e) {
+            e.preventDefault()
+            var serializedData = $(this).serialize();
+
+            $.ajax({
+                type: "POST",
+                url: "{% url "blog:comment-post" blog.slug %}",
+                data: serializedData,
+                success: async function (response) {
+                    $("#post-form").trigger('reset');
+                    $("title").focus()
+
+                    var instance = JSON.parse(response["instance"]);
+                    var fields = instance[0]["fields"];
+
+                    $(".done").prepend(
+                        `
+                        <hr>
+                        <p class="text-success">
+                          ${fields["text"]}
+                        </p>
+                        <p><strong>Post Date:</strong> ${fields["post_date"]}</p>
+                        <p><strong>By:</strong> {{ current_user.first_name }}</p>
+                        {% if comment.blog.author == current_user  %}
+                            <form method="post" action="{% url "blog:toggle-comment" blog.slug comment.id %}" class="admin-comment">
+                            {% csrf_token %}
+                            <button>{% if comment.is_delete %}Unhide{% else %}Hide{% endif %}</button>
+                             </form>
+                        {% endif %}
+                        `
+                    )
+                },
+                error: function (response) {
+                    console.log(response["responseJSON"]["error"])
+                }
+            });
+        });
+    </script>
+{% endblock %}
 
 
 

@@ -3,7 +3,7 @@ from django.views import View
 from django.views.generic import UpdateView
 from django.views.generic import TemplateView
 from django.views.generic import ListView, DetailView
-from django.utils.decorators import method_decorator
+# from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
@@ -11,6 +11,8 @@ from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Q
+from django.http import JsonResponse
+from django.core import serializers
 
 from django.contrib.auth.models import User
 from .models import Blog, Comment, Profile
@@ -42,7 +44,6 @@ class BlogListView(ListView):
 class ChangePasswordView(SuccessMessageMixin, PasswordChangeView):
     template_name = "blog/change_password.html"
     success_message = "Successfully Changed Your Password"
-    success_url = reverse_lazy("author-detail")
 
     def get_success_url(self):
         user_id = self.request.user.id
@@ -75,43 +76,40 @@ class BlogAuthorDetailView(DetailView):
         return context
 
 
-class BlogPostDetailPage(View):
-    def get(self, request, slug):
-        blog = Blog.objects.get(slug=slug)
-        current_user = self.request.user
+class BlogPostDetailPage(DetailView):
+    model = Blog
 
+    def get_context_data(self, **kwargs):
+        blog = Blog.objects.get(slug=self.kwargs.get("slug"))
+        current_user = self.request.user
         if self.request.user != blog.author:
             comments = Comment.active_comments.filter(blog=blog).order_by("-post_date")
         else:
             comments = Comment.objects.filter(blog=blog).order_by("-post_date")
 
-        context = {
-            "blog": blog,
-            "comment_form": CommentForm(),
-            "comments": comments,
-            "current_user": current_user,
-            "slug": slug
-        }
-        return render(request, "blog/blog_detail.html", context)
+        context = super(BlogPostDetailPage, self).get_context_data(**kwargs)
+        context["comment_form"] = CommentForm()
+        context["comments"] = comments
+        context["current_user"] = current_user
+        return context
 
-    @method_decorator(login_required)
-    def post(self, request, slug):
-        comment_form = CommentForm(request.POST)
+
+@login_required
+def comment_post_view(request, slug):
+    if request.method == "POST":
         blog = Blog.objects.get(slug=slug)
+        form = CommentForm(request.POST)
 
-        if comment_form.is_valid():
-            comment = comment_form.save(commit=False)
-            comment.blog = blog
-            comment.comment_owner = self.request.user
-            comment.save()
-            return HttpResponseRedirect(reverse("blog:blog-detail", args=[slug]))
-
-        context = {
-            "blog": blog,
-            "comment_form": comment_form,
-            "comments": blog.comments.all().order_by("-post_date")
-        }
-        return render(request, "blog/blog_detail.html", context)
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.blog = blog
+            instance.comment_owner = request.user
+            instance.save()
+            ser_instance = serializers.serialize('json', [instance, ])
+            return JsonResponse({"instance": ser_instance}, status=200)
+        else:
+            return JsonResponse({"error": form.errors}, status=400)
+    return JsonResponse({"errors": ""}, status=400)
 
 
 class UpdateBlogView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
@@ -171,7 +169,7 @@ class ProfileUpdateView(View):
 class ToggleComment(View):
     def post(self, request, pk, slug):
         comment = Comment.objects.get(pk=pk)
-        
+        #
         if comment.is_delete:
             comment.is_delete = False
         elif not comment.is_delete:
